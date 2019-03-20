@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(
-    tableName = "sequences",
+    tableName = "sequences_table",
     indices = [Index("numberID")]
 )
 data class Sequence(

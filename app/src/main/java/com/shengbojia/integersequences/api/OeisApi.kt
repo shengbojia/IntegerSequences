@@ -12,6 +12,9 @@ import retrofit2.http.Query
 
 private const val TAG = "ApiOeis"
 
+/**
+ * Api communication setup via Retrofit.
+ */
 interface OeisApi {
     @GET("/search")
     fun search(

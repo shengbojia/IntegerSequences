@@ -54,6 +54,8 @@ dependencies {
 
     implementation deps.work.runtime_ktx
 
+    implementation deps.paging
+
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
     implementation deps.okhttp_logging_interceptor

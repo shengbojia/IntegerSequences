@@ -5,9 +5,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class Converters {
+    /*
 
     @TypeConverter
-    fun fromListToJson(list: List<String>): String {
+    fun fromListToJson(list: List<String>?): String {
+        if (list == null) {
+            return ""
+        }
         return Gson().toJson(list)
     }
 
@@ -18,4 +22,5 @@ class Converters {
     }
 
     private inline fun <reified T> genericType() = object : TypeToken<T>() {}.type
+    */
 }

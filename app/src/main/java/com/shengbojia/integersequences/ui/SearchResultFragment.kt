@@ -2,27 +2,27 @@ package com.shengbojia.integersequences.ui
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
+import androidx.paging.PagedList
 import com.shengbojia.integersequences.R
+import com.shengbojia.integersequences.adapter.SequenceAdapter
+import com.shengbojia.integersequences.databinding.FragmentSearchResultBinding
+import com.shengbojia.integersequences.model.IntSequence
 import com.shengbojia.integersequences.util.InjectorUtils
 import com.shengbojia.integersequences.viewmodel.SearchViewModel
-import com.shengbojia.integersequences.databinding.FragmentHomeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 /**
  * A simple [Fragment] subclass.
  *
  */
-class HomeFragment : Fragment() {
+class SearchResultFragment : Fragment() {
+
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var adapter: SequenceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,17 +39,17 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        val binding = FragmentSearchResultBinding.inflate(inflater, container, false)
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        adapter = SequenceAdapter()
+        binding.recyclerSequenceList.adapter = adapter
 
-        binding.btnSearchSearch.setOnClickListener {
-            searchBtnClick(it)
-        }
+        // Register an observer for the LiveData
+        subscribeUi(adapter)
 
         setHasOptionsMenu(true)
-        return binding.root
 
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,22 +66,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun searchBtnClick(view: View) {
-        Log.d(TAG, "Clicked search button")
-        val queryInput = filterInput(binding.etSearchQueryInput.text.toString())
-
-        searchViewModel.search(queryInput)
-        val direction = HomeFragmentDirections.actionHomeFragmentToSearchResultFragment()
-        findNavController().navigate(direction)
-    }
-
-    private fun filterInput(queryInput: String): String {
-        return queryInput
-
-    }
-
-    companion object {
-        private const val TAG = "FragmentHome"
+    private fun subscribeUi(adapter: SequenceAdapter) {
+        searchViewModel.sequences.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
     }
 
 }

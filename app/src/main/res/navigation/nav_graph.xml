@@ -8,5 +8,30 @@
     <fragment android:id="@+id/homeFragment"
               android:name="com.shengbojia.integersequences.ui.HomeFragment"
               android:label="fragment_home"
-              tools:layout="@layout/fragment_home"/>
+              tools:layout="@layout/fragment_home">
+
+        <action android:id="@+id/action_homeFragment_to_searchResultFragment"
+                app:destination="@id/searchResultFragment"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/searchResultFragment"
+              android:name="com.shengbojia.integersequences.ui.SearchResultFragment"
+              android:label="fragment_search_result"
+              tools:layout="@layout/fragment_search_result">
+
+        <action android:id="@+id/action_searchResultFragment_to_sequenceDetailFragment"
+                app:destination="@id/sequenceDetailFragment"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/sequenceDetailFragment"
+              android:name="com.shengbojia.integersequences.ui.SequenceDetailFragment"
+              android:label="fragment_sequence_detail"
+              tools:layout="@layout/fragment_sequence_detail">
+
+        <argument
+                android:name="sequenceId"
+                app:argType="integer"/>
+    </fragment>
 </navigation>

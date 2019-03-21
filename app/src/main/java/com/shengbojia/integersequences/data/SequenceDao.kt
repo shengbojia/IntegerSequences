@@ -1,6 +1,7 @@
 package com.shengbojia.integersequences.data
 
 import androidx.paging.DataSource
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -9,6 +10,7 @@ import com.shengbojia.integersequences.model.IntSequence
 /**
  * Data Access Object for accessing [IntSequence] table.
  */
+@Dao
 interface SequenceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -22,6 +24,6 @@ interface SequenceDao {
     @Query("SELECT * FROM sequences_table WHERE (sequenceSnippet LIKE '%,' || :query || ',%') " +
             "OR (sequenceSnippet LIKE '&,' || :query) " +
             "OR (sequenceSnippet LIKE :query || ',%')" +
-            "ORDER BY numberId DESC")
+            "ORDER BY numberId")
     fun search(query: String): DataSource.Factory<Int, IntSequence>
 }

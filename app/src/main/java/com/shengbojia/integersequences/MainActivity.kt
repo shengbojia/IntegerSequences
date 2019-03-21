@@ -7,12 +7,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.AppBarLayout
 import com.shengbojia.integersequences.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
-    private lateinit var appBarLayout: AppBarLayout
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         navController = Navigation.findNavController(this, R.id.nav_host_frag)
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
 
         // Set up ActionBar
         setSupportActionBar(binding.toolbar)

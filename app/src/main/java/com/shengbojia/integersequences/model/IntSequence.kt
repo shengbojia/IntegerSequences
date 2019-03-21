@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "sequences_table",
-    indices = [Index("numberID")]
+    indices = [Index("numberId")]
 )
 data class IntSequence(
     @PrimaryKey
@@ -16,7 +16,7 @@ data class IntSequence(
     @SerializedName("data")
     val sequenceSnippet: String,
     @SerializedName("name")
-    val name: String,
-    @SerializedName("formula")
-    val formulas: List<String>
+    val name: String//,
+    //@SerializedName("formula")
+    //val formulas: List<String>
 )

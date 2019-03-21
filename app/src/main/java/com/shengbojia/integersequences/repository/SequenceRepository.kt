@@ -6,7 +6,7 @@ import com.shengbojia.integersequences.api.OeisApi
 import com.shengbojia.integersequences.data.LocalCache
 import com.shengbojia.integersequences.model.SequenceSearchResult
 
-class SequenceRespository(
+class SequenceRepository(
     private val api: OeisApi,
     private val cache: LocalCache
 ) {
@@ -38,11 +38,11 @@ class SequenceRespository(
 
         // Singleton instantiation
         @Volatile
-        private var INSTANCE: SequenceRespository? = null
+        private var INSTANCE: SequenceRepository? = null
 
-        fun getInstance(api: OeisApi, cache: LocalCache): SequenceRespository =
+        fun getInstance(api: OeisApi, cache: LocalCache): SequenceRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: SequenceRespository(api, cache).also { INSTANCE = it }
+                INSTANCE ?: SequenceRepository(api, cache).also { INSTANCE = it }
             }
     }
 }

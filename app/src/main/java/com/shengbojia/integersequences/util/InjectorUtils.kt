@@ -25,7 +25,7 @@ object InjectorUtils {
      * Creates an instance of [SequenceRepository] based on the [OeisApi] and a [LocalCache]
      */
     private fun getSequenceRepository(context: Context) =
-        SequenceRepository(OeisApi.create(), getLocalCache(context))
+        SequenceRepository.getInstance(OeisApi.create(), getLocalCache(context))
 
 
 }

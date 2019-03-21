@@ -24,6 +24,16 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <fragment
+                android:id="@+id/nav_host_frag"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                app:navGraph="@navigation/nav_graph"
+                app:defaultNavHost="true"/>
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

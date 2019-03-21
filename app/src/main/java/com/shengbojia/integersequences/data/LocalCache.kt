@@ -2,7 +2,7 @@ package com.shengbojia.integersequences.data
 
 import android.util.Log
 import androidx.paging.DataSource
-import com.shengbojia.integersequences.model.Sequence
+import com.shengbojia.integersequences.model.IntSequence
 import java.util.concurrent.Executor
 
 /**
@@ -17,18 +17,18 @@ class LocalCache(
     /**
      * Insert into db, on a background thread. After inserting into local db, execute passed function.
      *
-     * @param sequences list of [Sequence] to insert
+     * @param intSequences list of [IntSequence] to insert
      * @param insertFinishedFunc function to call after insert
      */
-    fun insert(sequences: List<Sequence>, insertFinishedFunc: () -> Unit) {
+    fun insert(intSequences: List<IntSequence>, insertFinishedFunc: () -> Unit) {
         ioExecutor.execute {
-            Log.d(TAG, "Inserting ${sequences.size} sequences in db")
-            sequenceDao.insert(sequences)
+            Log.d(TAG, "Inserting ${intSequences.size} intSequences in db")
+            sequenceDao.insert(intSequences)
             insertFinishedFunc()
         }
     }
 
-    fun search(query: String): DataSource.Factory<Int, Sequence> {
+    fun search(query: String): DataSource.Factory<Int, IntSequence> {
         Log.d(TAG, "Doing search into Db")
         return sequenceDao.search(query)
     }

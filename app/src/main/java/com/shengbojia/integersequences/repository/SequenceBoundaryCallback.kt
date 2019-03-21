@@ -7,7 +7,7 @@ import androidx.paging.PagedList
 import com.shengbojia.integersequences.api.OeisApi
 import com.shengbojia.integersequences.api.searchAndHandleResponse
 import com.shengbojia.integersequences.data.LocalCache
-import com.shengbojia.integersequences.model.Sequence
+import com.shengbojia.integersequences.model.IntSequence
 
 /**
  * Observes when the user reaches the end of locally cached data and then requests new data from the network.
@@ -16,7 +16,7 @@ class SequenceBoundaryCallback(
     private val query: String,
     private val api: OeisApi,
     private val cache: LocalCache
-) : PagedList.BoundaryCallback<Sequence>() {
+) : PagedList.BoundaryCallback<IntSequence>() {
 
     // Oeis returns 10 items per call, starts at 0
     private var lastRequestedItem = 0
@@ -45,7 +45,7 @@ class SequenceBoundaryCallback(
     /**
      * When the end item of the list in the db is loaded, queries for more items from backend.
      */
-    override fun onItemAtEndLoaded(itemAtEnd: Sequence) {
+    override fun onItemAtEndLoaded(itemAtEnd: IntSequence) {
         Log.d(TAG, "onItemAtEndLoaded")
         requestAndSaveData(query)
     }

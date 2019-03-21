@@ -4,6 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 
 data class SequenceSearchResult(
-    val data: LiveData<PagedList<Sequence>>,
+    val data: LiveData<PagedList<IntSequence>>,
     val networkErrors: LiveData<String>
 )

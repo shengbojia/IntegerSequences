@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
     tableName = "sequences_table",
     indices = [Index("numberID")]
 )
-data class Sequence(
+data class IntSequence(
     @PrimaryKey
     @SerializedName("number")
     val numberId: Int,

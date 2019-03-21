@@ -4,18 +4,18 @@ import androidx.paging.DataSource
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.shengbojia.integersequences.model.Sequence
+import com.shengbojia.integersequences.model.IntSequence
 
 /**
- * Data Access Object for accessing [Sequence] table.
+ * Data Access Object for accessing [IntSequence] table.
  */
 interface SequenceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(sequences: List<Sequence>)
+    fun insert(intSequences: List<IntSequence>)
 
     /**
-     * Similar to API search, seeks [Sequence]s that contain the query as a sub-sequence.
+     * Similar to API search, seeks [IntSequence]s that contain the query as a sub-sequence.
      *
      * @param query string of numbers separated by commas
      */
@@ -23,5 +23,5 @@ interface SequenceDao {
             "OR (sequenceSnippet LIKE '&,' || :query) " +
             "OR (sequenceSnippet LIKE :query || ',%')" +
             "ORDER BY numberId DESC")
-    fun search(query: String): DataSource.Factory<Int, Sequence>
+    fun search(query: String): DataSource.Factory<Int, IntSequence>
 }

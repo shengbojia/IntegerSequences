@@ -9,4 +9,3 @@ fun bindSequenceId(view: TextView, id: Int?) {
         view.text = "A${id.toString()}"
     }
 }
-git

@@ -6,8 +6,8 @@
     <data>
         <variable name="clickListener"
                   type="android.view.View.OnClickListener"/>
-        <variable name="sequence"
-                  type="com.shengbojia.integersequences.model.Sequence"/>
+        <variable name="intSequence"
+                  type="com.shengbojia.integersequences.model.IntSequence"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -27,7 +27,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:sequenceId="@{sequence.numberId}"
+                    app:sequenceId="@{intSequence.numberId}"
                     tools:text="000001"/>
 
             <TextView
@@ -38,8 +38,8 @@
                     android:ellipsize="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{sequence.name}"
-                    tools:text="Sequence name goes here"/>
+                    android:text="@{intSequence.name}"
+                    tools:text="IntSequence name goes here"/>
 
             <TextView
                     android:id="@+id/tv_listItem_sequenceSnippet"
@@ -50,7 +50,7 @@
                     android:paddingBottom="@dimen/padding_listItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{sequence.sequenceSnippet}"
+                    android:text="@{intSequence.sequenceSnippet}"
                     tools:text="11111, 22222, 33333, 44444, 55555, 66666, 77777, 88888, 99999"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

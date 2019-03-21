@@ -1,7 +1,7 @@
 package com.shengbojia.integersequences.api
 
 import android.util.Log
-import com.shengbojia.integersequences.model.Sequence
+import com.shengbojia.integersequences.model.IntSequence
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -18,7 +18,7 @@ fun searchAndHandleResponse(
     api: OeisApi,
     query: String,
     startAt: Int,
-    onSuccessFunc: (sequences: List<Sequence>, count: Int) -> Unit,
+    onSuccessFunc: (intSequences: List<IntSequence>, count: Int) -> Unit,
     onErrorFunc: (errorMsg: String) -> Unit
 ) {
     Log.d(TAG, "Query: $query, $startAt")
@@ -40,9 +40,9 @@ fun searchAndHandleResponse(
                 Log.d(TAG, "Got some sort of response, $response")
                 if (response.isSuccessful) {
                     // Look at README.md for more info on how this database returns results
-                    val sequences: List<Sequence> = response.body()?.results ?: emptyList()
+                    val intSequences: List<IntSequence> = response.body()?.results ?: emptyList()
                     val totalCount = response.body()?.count ?: 0
-                    onSuccessFunc(sequences, totalCount)
+                    onSuccessFunc(intSequences, totalCount)
                 } else {
                     onErrorFunc(response.errorBody()?.string() ?: "Unknown error Code 2")
                 }

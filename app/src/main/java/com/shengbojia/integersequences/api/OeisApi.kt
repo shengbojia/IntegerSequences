@@ -2,7 +2,6 @@ package com.shengbojia.integersequences.api
 
 import android.util.Log
 import com.shengbojia.integersequences.model.Sequence
-import com.shengbojia.integersequences.util.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -15,7 +14,7 @@ import retrofit2.http.Query
 
 private const val TAG = "ApiOeis"
 
-fun search(
+fun searchAndHandleResponse(
     api: OeisApi,
     query: String,
     startAt: Int,
@@ -63,6 +62,7 @@ interface OeisApi {
     ): Call<SequenceSearchResponse>
 
     companion object {
+        private const val BASE_URL = "https://oeis.org/"
 
         fun create(): OeisApi {
             val logger =  HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {

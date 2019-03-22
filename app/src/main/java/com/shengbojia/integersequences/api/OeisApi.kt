@@ -58,7 +58,8 @@ interface OeisApi {
     fun search(
         @Query("q") query: String,
         @Query("fmt") format: String = "json",
-        @Query("start") startAt: Int = 0
+        @Query("start") startAt: Int = 0,
+        @Query("sort") sortBy: String = "number"
     ): Call<SequenceSearchResponse>
 
     companion object {

@@ -15,7 +15,7 @@ import com.shengbojia.integersequences.model.IntSequence
     version = 1,
     exportSchema = false
 )
-//@TypeConverters(Converters::class)
+@TypeConverters(Converters::class)
 abstract class SequenceDatabase : RoomDatabase() {
 
     abstract fun sequenceDao(): SequenceDao

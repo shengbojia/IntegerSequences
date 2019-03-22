@@ -24,6 +24,6 @@ interface SequenceDao {
     @Query("SELECT * FROM sequences_table WHERE (sequenceSnippet LIKE '%,' || :query || ',%') " +
             "OR (sequenceSnippet LIKE '&,' || :query) " +
             "OR (sequenceSnippet LIKE :query || ',%')" +
-            "ORDER BY numberId")
+            "ORDER BY tableId")
     fun search(query: String): DataSource.Factory<Int, IntSequence>
 }

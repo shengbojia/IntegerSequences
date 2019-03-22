@@ -15,7 +15,7 @@ class SequenceAdapter : PagedListAdapter<IntSequence, RecyclerView.ViewHolder>(S
             SequenceHolder.create(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val sequence = getItem(position) ?: throw IllegalStateException("getItem returned null")
+        val sequence = getItem(position) ?: return
         sequence.let {
             with(holder as SequenceHolder) {
                 this.itemView.tag = it

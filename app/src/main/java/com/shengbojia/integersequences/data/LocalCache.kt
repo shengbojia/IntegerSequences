@@ -26,6 +26,7 @@ class LocalCache(
             sequenceDao.insert(intSequences)
             insertFinishedFunc()
         }
+
     }
 
     fun search(query: String): DataSource.Factory<Int, IntSequence> {

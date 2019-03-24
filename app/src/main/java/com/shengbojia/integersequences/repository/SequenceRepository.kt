@@ -2,6 +2,7 @@ package com.shengbojia.integersequences.repository
 
 import android.util.Log
 import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.shengbojia.integersequences.api.OeisApi
 import com.shengbojia.integersequences.data.LocalCache
 import com.shengbojia.integersequences.model.SequenceSearchResult
@@ -22,8 +23,14 @@ class SequenceRepository(
         val boundaryCallback = SequenceBoundaryCallback(query, api, cache)
         val networkErrors = boundaryCallback.networkErrors
 
+
         // get paged list
-        val data = LivePagedListBuilder(dataSourceFactory, DATABASE_PAGE_SIZE)
+        val pageListConfig = PagedList.Config.Builder()
+            .setPageSize(DATABASE_PAGE_SIZE)
+            .setEnablePlaceholders(true)
+            .build()
+
+        val data = LivePagedListBuilder(dataSourceFactory, pageListConfig)
             .setBoundaryCallback(boundaryCallback)
             .build()
 

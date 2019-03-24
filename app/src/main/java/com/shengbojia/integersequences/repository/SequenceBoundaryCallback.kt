@@ -22,7 +22,7 @@ class SequenceBoundaryCallback(
     private var lastRequestedItem = 0
 
     // total amount of matching sequences
-    private var totalCount = 0
+    private var totalCount: Int? = null
 
     // mutable version to post values in
     private val _networkErrors = MutableLiveData<String>()
@@ -39,6 +39,10 @@ class SequenceBoundaryCallback(
      */
     override fun onZeroItemsLoaded() {
         Log.d(TAG, "onZero")
+        if (totalCount != null && lastRequestedItem > totalCount as Int) {
+            return
+        }
+
         requestAndSaveData(query)
     }
 
@@ -46,7 +50,11 @@ class SequenceBoundaryCallback(
      * When the end item of the list in the db is loaded, queries for more items from backend.
      */
     override fun onItemAtEndLoaded(itemAtEnd: IntSequence) {
-        Log.d(TAG, "onItemAtEndLoaded")
+        Log.d(TAG, "onItemAtEndLoaded $totalCount $lastRequestedItem")
+        if (totalCount != null && lastRequestedItem > totalCount as Int) {
+            return
+        }
+
         requestAndSaveData(query)
     }
 

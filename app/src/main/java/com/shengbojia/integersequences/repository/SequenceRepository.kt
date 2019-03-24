@@ -27,6 +27,7 @@ class SequenceRepository(
         // get paged list
         val pageListConfig = PagedList.Config.Builder()
             .setPageSize(DATABASE_PAGE_SIZE)
+            .setPrefetchDistance(10)
             .setEnablePlaceholders(true)
             .build()
 
@@ -41,7 +42,7 @@ class SequenceRepository(
         private const val TAG = "RepositorySequence"
 
         // Might change this, depending on Room db performance and final UI changes
-        private const val DATABASE_PAGE_SIZE = 15
+        private const val DATABASE_PAGE_SIZE = 10
 
         // Singleton instantiation
         @Volatile

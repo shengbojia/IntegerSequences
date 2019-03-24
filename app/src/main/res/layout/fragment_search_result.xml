@@ -13,7 +13,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/list_item_sequence">
+                tools:listitem="@layout/list_item_sequence" android:scrollbars="vertical">
 
         </androidx.recyclerview.widget.RecyclerView>
 

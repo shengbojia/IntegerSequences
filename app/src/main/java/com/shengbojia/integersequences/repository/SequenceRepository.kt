@@ -21,8 +21,8 @@ class SequenceRepository(
         // every new query starts a new BoundaryCallback whom observes when user reaches the end of
         // the locally stored list of data
         val boundaryCallback = SequenceBoundaryCallback(query, api, cache)
-        val networkErrors = boundaryCallback.networkErrors
-
+        val networkState = boundaryCallback.networkState
+        val resultState = boundaryCallback.resultState
 
         // get paged list
         val pageListConfig = PagedList.Config.Builder()
@@ -35,7 +35,7 @@ class SequenceRepository(
             .setBoundaryCallback(boundaryCallback)
             .build()
 
-        return SequenceSearchResult(data, networkErrors)
+        return SequenceSearchResult(data, networkState, resultState)
     }
 
     companion object {

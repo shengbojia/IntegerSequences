@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.shengbojia.integersequences.model.IntSequence
 import com.shengbojia.integersequences.model.SequenceSearchResult
+import com.shengbojia.integersequences.repository.NetworkState
+import com.shengbojia.integersequences.repository.ResultState
 import com.shengbojia.integersequences.repository.SequenceRepository
 
 class SearchViewModel(private val repository: SequenceRepository) : ViewModel() {
@@ -20,8 +22,12 @@ class SearchViewModel(private val repository: SequenceRepository) : ViewModel() 
     val sequences: LiveData<PagedList<IntSequence>> = Transformations.switchMap(resultLiveData) {
         it.data
     }
-    val networkErrors: LiveData<String> = Transformations.switchMap(resultLiveData) {
-        it.networkErrors
+    val networkState: LiveData<NetworkState> = Transformations.switchMap(resultLiveData) {
+        it.networkState
+    }
+
+    val resultState: LiveData<ResultState> = Transformations.switchMap(resultLiveData) {
+        it.resultState
     }
 
     /**

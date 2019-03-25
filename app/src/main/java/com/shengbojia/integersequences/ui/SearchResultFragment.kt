@@ -24,6 +24,8 @@ class SearchResultFragment : Fragment() {
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var adapter: SequenceAdapter
 
+    private lateinit var binding: FragmentSearchResultBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,13 +41,10 @@ class SearchResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentSearchResultBinding.inflate(inflater, container, false)
-
-        adapter = SequenceAdapter()
-        binding.recyclerSequenceList.adapter = adapter
+        binding = FragmentSearchResultBinding.inflate(inflater, container, false)
 
         // Register an observer for the LiveData
-        subscribeUi(adapter)
+        initAdapter()
 
         setHasOptionsMenu(true)
 
@@ -66,10 +65,17 @@ class SearchResultFragment : Fragment() {
         }
     }
 
-    private fun subscribeUi(adapter: SequenceAdapter) {
+    private fun initAdapter() {
+        adapter = SequenceAdapter()
+        binding.recyclerSequenceList.adapter = adapter
+
         searchViewModel.sequences.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
     }
+
+
+
+
 
 }

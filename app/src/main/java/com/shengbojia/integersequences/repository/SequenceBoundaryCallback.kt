@@ -28,10 +28,9 @@ class SequenceBoundaryCallback(
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
-    private val _resultState = MutableLiveData<ResultState>()
+    lateinit var resultState: ResultState
 
-    val resultState: LiveData<ResultState>
-        get() = _resultState
+    var totalCount: Int? = null
 
     // prevent triggering multiple requests before result returns
     private var isRequestInProgress = false
@@ -41,18 +40,25 @@ class SequenceBoundaryCallback(
      */
     override fun onZeroItemsLoaded() {
         Log.d(TAG, "onZero")
-        requestAndSaveData(query, true)
+        requestAndSaveData(query) { sequences, count ->
+            determineResultState(sequences, count)
+            requestSuccess(sequences, count)
+        }
+        Log.d(TAG, "onZero total count: $totalCount")
     }
 
     /**
      * When the end item of the list in the db is loaded, queries for more items from backend.
      */
     override fun onItemAtEndLoaded(itemAtEnd: IntSequence) {
-        Log.d(TAG, "onItemAtEndLoaded ${resultState.value} $lastRequestedItem")
-        if (lastRequestedItem > resultState.value!!.totalCount) {
+        Log.d(TAG, "onItemAtEndLoaded ${resultState.status} $lastRequestedItem")
+        if (lastRequestedItem > totalCount!!) {
             return
         }
-        requestAndSaveData(query, false)
+
+        requestAndSaveData(query) { sequences, count ->
+            requestSuccess(sequences, count)
+        }
     }
 
     /*
@@ -88,39 +94,63 @@ class SequenceBoundaryCallback(
     }
     */
 
+    /**
+     * Only called on the initial call to the network. Determines the type of result returned by the network
+     * from the query, and sets the total count of matching results.
+     */
     private fun determineResultState(sequences: List<IntSequence>, count: Int) {
         if (sequences.isEmpty() && count > 0) {
 
-            _resultState.value = ResultState.tooManyResults(count)
+            resultState = ResultState.TOO_MANY_RESULTS
 
         } else if (count == 0) {
 
-            _resultState.value = ResultState.NO_RESULTS
+            resultState = ResultState.NO_RESULTS
 
         } else {
 
-            _resultState.value = ResultState.normal(count)
+            resultState = ResultState.NORMAL
         }
+
+        totalCount = count
 
     }
 
-    private fun requestAndSaveData(query: String, initialRequest: Boolean) {
+    /**
+     * On the event of a successful network request, update the index of last requested item, network state, and
+     * whether request is in progress.
+     *
+     * @param sequences list of [IntSequence] to insert into db
+     * @param count number of matching results as reported by network
+     */
+    private fun requestSuccess(sequences: List<IntSequence>, count: Int) {
+        // TODO: Could do something with count, like check if data has changed
+        cache.insert(sequences) {
+            // update status
+            lastRequestedItem += 10
+            _networkState.postValue(NetworkState.LOADED)
+            isRequestInProgress = false
+        }
+    }
+
+    /**
+     * Requests data from the Api and inserts the data into the db.
+     *
+     * @param query to be searched
+     * @param requestSuccessFunc function to call on successful request
+     */
+    private fun requestAndSaveData(
+        query: String,
+        requestSuccessFunc: (List<IntSequence>, Int) -> Unit
+    ) {
         if (isRequestInProgress) return
 
         _networkState.postValue(NetworkState.LOADING)
         isRequestInProgress = true
         searchAndHandleResponse(api, query, lastRequestedItem, { sequences, count ->
 
-            if (initialRequest) {
-                determineResultState(sequences, count)
-            }
+            requestSuccessFunc(sequences, count)
 
-            cache.insert(sequences) {
-                // update status
-                lastRequestedItem += 10
-                _networkState.postValue(NetworkState.LOADED)
-                isRequestInProgress = false
-            }
         }, { errorMsg ->
             // Safe as LiveData calls this on main thread
             _networkState.postValue(NetworkState.error(errorMsg))
@@ -128,9 +158,7 @@ class SequenceBoundaryCallback(
         })
     }
 
-    private fun handleTooManyResults() {
 
-    }
 
     companion object {
         private const val TAG = "CallbackBoundary"

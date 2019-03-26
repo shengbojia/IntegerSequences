@@ -1,23 +1,22 @@
 package com.shengbojia.integersequences.repository
 
 enum class ResultStatus {
-    NORMAL,
-    NO_RESULTS,
-    TOO_MANY_RESULTS
+    RESULT_AND_COUNT_POSITIVE,
+    RESULT_AND_COUNT_ZERO,
+    RESULT_NULL_AND_COUNT_POSITIVE
 }
 
 @Suppress("DataClassPrivateConstructor")
 data class ResultState private constructor(
-    val status: ResultStatus,
-    val totalCount: Int
+    val status: ResultStatus
 ) {
 
     companion object {
 
-        val NO_RESULTS = ResultState(ResultStatus.NO_RESULTS, 0)
+        val NORMAL = ResultState(ResultStatus.RESULT_AND_COUNT_POSITIVE)
 
-        fun normal(totalCount: Int) = ResultState(ResultStatus.NORMAL, totalCount)
+        val NO_RESULTS = ResultState(ResultStatus.RESULT_AND_COUNT_ZERO)
 
-        fun tooManyResults(totalCount: Int) = ResultState(ResultStatus.TOO_MANY_RESULTS, totalCount)
+        val TOO_MANY_RESULTS = ResultState(ResultStatus.RESULT_NULL_AND_COUNT_POSITIVE)
     }
 }

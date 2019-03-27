@@ -14,8 +14,6 @@ import com.shengbojia.integersequences.util.InjectorUtils
 import com.shengbojia.integersequences.viewmodel.SearchViewModel
 import com.shengbojia.integersequences.databinding.FragmentHomeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 /**
  * A simple [Fragment] subclass.
  *

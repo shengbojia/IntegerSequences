@@ -45,6 +45,7 @@ class SearchResultFragment : Fragment() {
 
         // Register an observer for the LiveData
         initAdapter()
+        initResultSummary()
 
         setHasOptionsMenu(true)
 
@@ -74,8 +75,11 @@ class SearchResultFragment : Fragment() {
         })
     }
 
-
-
+    private fun initResultSummary() {
+        searchViewModel.totalCount.observe(viewLifecycleOwner, Observer {
+            binding.tvResultFragResultsNum.text = it.toString()
+        })
+    }
 
 
 

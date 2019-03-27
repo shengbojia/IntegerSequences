@@ -30,6 +30,10 @@ class SearchViewModel(private val repository: SequenceRepository) : ViewModel() 
         it.resultState
     }
 
+    val totalCount: LiveData<Int> = Transformations.switchMap(resultLiveData) {
+        it.totalCount
+    }
+
     /**
      * Posts queryLiveData's value, which causes the repository call its search function due to
      * the above Transformations.map.

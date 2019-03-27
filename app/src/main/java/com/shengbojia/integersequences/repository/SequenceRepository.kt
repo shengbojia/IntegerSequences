@@ -23,11 +23,12 @@ class SequenceRepository(
         val boundaryCallback = SequenceBoundaryCallback(query, api, cache)
         val networkState = boundaryCallback.networkState
         val resultState = boundaryCallback.resultState
+        val totalCount = boundaryCallback.totalCount
 
         // get paged list
         val pageListConfig = PagedList.Config.Builder()
             .setPageSize(DATABASE_PAGE_SIZE)
-            .setPrefetchDistance(10)
+            .setPrefetchDistance(0)
             .setEnablePlaceholders(true)
             .build()
 
@@ -35,7 +36,7 @@ class SequenceRepository(
             .setBoundaryCallback(boundaryCallback)
             .build()
 
-        return SequenceSearchResult(data, networkState, resultState)
+        return SequenceSearchResult(data, networkState, resultState, totalCount)
     }
 
     companion object {

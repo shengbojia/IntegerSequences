@@ -28,9 +28,15 @@ class SequenceBoundaryCallback(
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
-    lateinit var resultState: ResultState
+    private val _resultState = MutableLiveData<ResultState>()
 
-    var totalCount: Int? = null
+    val resultState: LiveData<ResultState>
+        get() = _resultState
+
+    private val _totalCount = MutableLiveData<Int>()
+
+    val totalCount: LiveData<Int>
+        get() = _totalCount
 
     // prevent triggering multiple requests before result returns
     private var isRequestInProgress = false
@@ -40,25 +46,20 @@ class SequenceBoundaryCallback(
      */
     override fun onZeroItemsLoaded() {
         Log.d(TAG, "onZero")
-        requestAndSaveData(query) { sequences, count ->
-            determineResultState(sequences, count)
-            requestSuccess(sequences, count)
-        }
-        Log.d(TAG, "onZero total count: $totalCount")
+        requestAndSaveData(query)
+        Log.d(TAG, "onZero total count: ${totalCount.value}")
     }
 
     /**
      * When the end item of the list in the db is loaded, queries for more items from backend.
      */
     override fun onItemAtEndLoaded(itemAtEnd: IntSequence) {
-        Log.d(TAG, "onItemAtEndLoaded ${resultState.status} $lastRequestedItem")
-        if (lastRequestedItem > totalCount!!) {
+        Log.d(TAG, "onItemAtEndLoaded ${totalCount.value} $lastRequestedItem")
+        if (lastRequestedItem > totalCount.value ?: 0) {
             return
         }
 
-        requestAndSaveData(query) { sequences, count ->
-            requestSuccess(sequences, count)
-        }
+        requestAndSaveData(query)
     }
 
     /*
@@ -101,18 +102,18 @@ class SequenceBoundaryCallback(
     private fun determineResultState(sequences: List<IntSequence>, count: Int) {
         if (sequences.isEmpty() && count > 0) {
 
-            resultState = ResultState.TOO_MANY_RESULTS
+            _resultState.value = ResultState.TOO_MANY_RESULTS
 
         } else if (count == 0) {
 
-            resultState = ResultState.NO_RESULTS
+            _resultState.value = ResultState.NO_RESULTS
 
         } else {
 
-            resultState = ResultState.NORMAL
+            _resultState.value = ResultState.NORMAL
         }
 
-        totalCount = count
+        _totalCount.value = count
 
     }
 
@@ -139,17 +140,15 @@ class SequenceBoundaryCallback(
      * @param query to be searched
      * @param requestSuccessFunc function to call on successful request
      */
-    private fun requestAndSaveData(
-        query: String,
-        requestSuccessFunc: (List<IntSequence>, Int) -> Unit
-    ) {
+    private fun requestAndSaveData(query: String) {
         if (isRequestInProgress) return
 
         _networkState.postValue(NetworkState.LOADING)
         isRequestInProgress = true
         searchAndHandleResponse(api, query, lastRequestedItem, { sequences, count ->
 
-            requestSuccessFunc(sequences, count)
+            determineResultState(sequences, count)
+            requestSuccess(sequences, count)
 
         }, { errorMsg ->
             // Safe as LiveData calls this on main thread
@@ -157,7 +156,6 @@ class SequenceBoundaryCallback(
             isRequestInProgress = false
         })
     }
-
 
 
     companion object {

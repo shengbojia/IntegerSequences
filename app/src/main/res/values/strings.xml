@@ -16,4 +16,6 @@
     <string name="title_homeScreen">Search for a sequence</string>
     <string name="resultFrag_end">End of results.</string>
     <string name="resultFrag_foundResults">Number of results found: </string>
+    <string name="homeFrag_instructions">Please enter a list of integers, separated by commas:</string>
+    <string name="homeFrag_hint">Eg. 1,2,4,9,25</string>
 </resources>

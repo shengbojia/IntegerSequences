@@ -8,11 +8,21 @@
             android:orientation="vertical"
             tools:context="com.shengbojia.integersequences.ui.HomeFragment">
 
+        <TextView
+                android:id="@+id/tv_search_instructions"
+                android:text="@string/homeFrag_instructions"
+                android:padding="@dimen/padding_listItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         <EditText
                 android:id="@+id/et_search_queryInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"/>
+                android:hint="@string/homeFrag_hint"
+                android:imeOptions="actionSearch"
+                android:digits=",0123456789"
+                android:inputType="number"/>
 
         <Button
                 android:id="@+id/btn_search_search"

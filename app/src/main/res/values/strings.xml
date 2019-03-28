@@ -18,4 +18,6 @@
     <string name="resultFrag_loading">Loading...</string>
 
     <string name="toast_emptyQuery">Please enter a search query</string>
+    <string name="invalidResult_noResults">No matching sequences found.</string>
+    <string name="invalidResult_tooMany">Too many results found, please refine your search.</string>
 </resources>

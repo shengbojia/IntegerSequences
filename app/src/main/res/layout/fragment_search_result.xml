@@ -2,35 +2,40 @@
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="com.shengbojia.integersequences.ui.SearchResultFragment">
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/tv_resultFrag_foundResults"
-                    android:text="@string/resultFrag_foundResults"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            <TextView
-                    android:id="@+id/tv_resultFrag_resultsNum"
-                    android:text="@string/resultFrag_loading"
-                    android:layout_marginStart="@dimen/padding_listItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <FrameLayout
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context="com.shengbojia.integersequences.ui.SearchResultFragment">
+
+            <LinearLayout
+                    android:id="@+id/linear_resultFrag_resultSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:id="@+id/tv_resultFrag_foundResults"
+                        android:text="@string/resultFrag_foundResults"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/tv_resultFrag_resultsNum"
+                        android:text="@string/resultFrag_loading"
+                        android:layout_marginStart="@dimen/padding_listItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_sequenceList"
@@ -43,17 +48,24 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <ProgressBar
-                    android:id="@+id/progressBar_resultFrag_loading"
-                    android:layout_gravity="center"
-                    android:minHeight="@dimen/minSize_progressBar"
-                    android:minWidth="@dimen/minSize_progressBar"
-                    android:indeterminate="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-        </FrameLayout>
 
+        </LinearLayout>
 
+        <TextView
+                android:id="@+id/tv_resultFrag_invalidResult"
+                tools:text="Oops, something went wrong"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+        <ProgressBar
+                android:id="@+id/progressBar_resultFrag_loading"
+                android:layout_gravity="center"
+                android:minHeight="@dimen/minSize_progressBar"
+                android:minWidth="@dimen/minSize_progressBar"
+                android:indeterminate="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </FrameLayout>
 </layout>

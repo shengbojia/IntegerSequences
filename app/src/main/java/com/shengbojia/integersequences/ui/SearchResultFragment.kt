@@ -50,7 +50,8 @@ class SearchResultFragment : Fragment() {
         // Register an observer for the LiveData
         initAdapter()
         initResultSummary()
-        handleNetworkStatus()
+        handleNetworkState()
+        handleResultState()
 
         setHasOptionsMenu(true)
 
@@ -71,18 +72,18 @@ class SearchResultFragment : Fragment() {
         }
     }
 
-    private fun handleNetworkStatus() {
+    private fun handleNetworkState() {
         searchViewModel.networkState.observe(viewLifecycleOwner, Observer {
             binding.apply {
                 if (it == null || it == NetworkState.LOADING) {
                     Log.d(TAG, "null or Loading: $it")
                     progressBarResultFragLoading.visibility = View.VISIBLE
-                    tvResultFragResultsNum.text = getString(R.string.resultFrag_loading)
 
                 } else if (it == NetworkState.LOADED) {
                     progressBarResultFragLoading.visibility = View.GONE
                     recyclerSequenceList.visibility = View.VISIBLE
-                    handleLoadedResult()
+                    linearResultFragResultSummary.visibility = View.VISIBLE
+
                 } else if (it.msg != null) {
                     handleNetworkError(it.msg)
                 }
@@ -90,13 +91,28 @@ class SearchResultFragment : Fragment() {
         })
     }
 
-    private fun handleLoadedResult() {
+    private fun handleResultState() {
         Log.d(TAG, "handleLoadedResult")
 
         searchViewModel.resultState.observe(viewLifecycleOwner, Observer {
-            if (it == ResultState.NORMAL) {
+            binding.apply {
+                if (it == null || it == ResultState.NORMAL) {
 
+                    tvResultFragInvalidResult.visibility = View.GONE
+
+                } else if (it == ResultState.NO_RESULTS) {
+
+                    tvResultFragInvalidResult.text = getString(R.string.invalidResult_noResults)
+                    tvResultFragInvalidResult.visibility = View.VISIBLE
+
+                } else if (it == ResultState.TOO_MANY_RESULTS) {
+
+                    tvResultFragInvalidResult.text = getString(R.string.invalidResult_tooMany)
+                    tvResultFragInvalidResult.visibility = View.VISIBLE
+
+                }
             }
+
         })
     }
 

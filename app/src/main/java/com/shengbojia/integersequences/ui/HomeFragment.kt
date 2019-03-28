@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
      */
     private fun search() {
         Log.d(TAG, "Clicked search button")
-        val queryInput = binding.etSearchQueryInput.text.toString()
+        val queryInput = filterInput(binding.etSearchQueryInput.text.toString())
 
         if (queryInput.isBlank()) {
             Toast.makeText(activity, getString(R.string.toast_emptyQuery), Toast.LENGTH_SHORT).show()
@@ -117,6 +117,7 @@ class HomeFragment : Fragment() {
      */
     private fun filterInput(queryInput: String): String {
 
+        // TODO: Implement this
         return queryInput
     }
 

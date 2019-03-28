@@ -2,6 +2,7 @@ package com.shengbojia.integersequences.ui
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,7 +13,10 @@ import com.shengbojia.integersequences.R
 import com.shengbojia.integersequences.adapter.SequenceAdapter
 import com.shengbojia.integersequences.databinding.FragmentSearchResultBinding
 import com.shengbojia.integersequences.model.IntSequence
+import com.shengbojia.integersequences.repository.NetworkState
+import com.shengbojia.integersequences.repository.ResultState
 import com.shengbojia.integersequences.util.InjectorUtils
+import com.shengbojia.integersequences.util.Utils
 import com.shengbojia.integersequences.viewmodel.SearchViewModel
 
 /**
@@ -46,6 +50,7 @@ class SearchResultFragment : Fragment() {
         // Register an observer for the LiveData
         initAdapter()
         initResultSummary()
+        handleNetworkStatus()
 
         setHasOptionsMenu(true)
 
@@ -66,6 +71,39 @@ class SearchResultFragment : Fragment() {
         }
     }
 
+    private fun handleNetworkStatus() {
+        searchViewModel.networkState.observe(viewLifecycleOwner, Observer {
+            binding.apply {
+                if (it == null || it == NetworkState.LOADING) {
+                    Log.d(TAG, "null or Loading: $it")
+                    progressBarResultFragLoading.visibility = View.VISIBLE
+                    tvResultFragResultsNum.text = getString(R.string.resultFrag_loading)
+
+                } else if (it == NetworkState.LOADED) {
+                    progressBarResultFragLoading.visibility = View.GONE
+                    recyclerSequenceList.visibility = View.VISIBLE
+                    handleLoadedResult()
+                } else if (it.msg != null) {
+                    handleNetworkError(it.msg)
+                }
+            }
+        })
+    }
+
+    private fun handleLoadedResult() {
+        Log.d(TAG, "handleLoadedResult")
+
+        searchViewModel.resultState.observe(viewLifecycleOwner, Observer {
+            if (it == ResultState.NORMAL) {
+
+            }
+        })
+    }
+
+    private fun handleNetworkError(errorMsg: String) {
+        Log.d(TAG, "handleNetworkError($errorMsg)")
+    }
+
     private fun initAdapter() {
         adapter = SequenceAdapter()
         binding.recyclerSequenceList.adapter = adapter
@@ -81,6 +119,8 @@ class SearchResultFragment : Fragment() {
         })
     }
 
-
+    companion object {
+        private const val TAG = "FragSearchResult"
+    }
 
 }

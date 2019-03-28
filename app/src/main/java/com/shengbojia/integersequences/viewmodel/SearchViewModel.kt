@@ -42,4 +42,5 @@ class SearchViewModel(private val repository: SequenceRepository) : ViewModel() 
         queryLiveData.value = query
     }
 
+
 }

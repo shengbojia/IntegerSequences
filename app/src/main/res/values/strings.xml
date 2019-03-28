@@ -15,4 +15,5 @@
     <string name="resultFrag_foundResults">Number of results found: </string>
     <string name="homeFrag_instructions">Please enter a list of integers, separated by commas:</string>
     <string name="homeFrag_hint">Eg. 1,2,4,9,25</string>
+    <string name="resultFrag_loading">Loading...</string>
 </resources>

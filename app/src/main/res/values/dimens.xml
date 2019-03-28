@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="margin_all_listItem">16dp</dimen>
     <dimen name="padding_listItem">8dp</dimen>
+    <dimen name="minSize_progressBar">50dp</dimen>
 </resources>

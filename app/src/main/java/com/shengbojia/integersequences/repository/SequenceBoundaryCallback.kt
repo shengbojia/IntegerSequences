@@ -1,6 +1,8 @@
 package com.shengbojia.integersequences.repository
 
 import android.util.Log
+import androidx.annotation.MainThread
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
@@ -44,6 +46,7 @@ class SequenceBoundaryCallback(
     /**
      * When the database is empty, queries backend for more items.
      */
+    @MainThread
     override fun onZeroItemsLoaded() {
         Log.d(TAG, "onZero")
         requestAndSaveData(query)
@@ -53,6 +56,7 @@ class SequenceBoundaryCallback(
     /**
      * When the end item of the list in the db is loaded, queries for more items from backend.
      */
+    @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: IntSequence) {
         Log.d(TAG, "onItemAtEndLoaded ${totalCount.value} $lastRequestedItem")
         if (lastRequestedItem > totalCount.value ?: 0) {
@@ -99,31 +103,33 @@ class SequenceBoundaryCallback(
      * Only called on the initial call to the network. Determines the type of result returned by the network
      * from the query, and sets the total count of matching results.
      */
+    @WorkerThread
     private fun determineResultState(sequences: List<IntSequence>, count: Int) {
         if (sequences.isEmpty() && count > 0) {
 
-            _resultState.value = ResultState.TOO_MANY_RESULTS
+            _resultState.postValue(ResultState.TOO_MANY_RESULTS)
 
         } else if (count == 0) {
 
-            _resultState.value = ResultState.NO_RESULTS
+            _resultState.postValue(ResultState.NO_RESULTS)
 
         } else {
 
-            _resultState.value = ResultState.NORMAL
+            _resultState.postValue(ResultState.NORMAL)
         }
 
-        _totalCount.value = count
+        _totalCount.postValue(count)
 
     }
 
     /**
-     * On the event of a successful network request, update the index of last requested item, network state, and
-     * whether request is in progress.
+     * On the event of a successful network request, update the index of last requested item, network state to loaded,
+     * and whether request is in progress.
      *
      * @param sequences list of [IntSequence] to insert into db
      * @param count number of matching results as reported by network
      */
+    @WorkerThread
     private fun requestSuccess(sequences: List<IntSequence>, count: Int) {
         // TODO: Could do something with count, like check if data has changed
         cache.insert(sequences) {
@@ -138,12 +144,12 @@ class SequenceBoundaryCallback(
      * Requests data from the Api and inserts the data into the db.
      *
      * @param query to be searched
-     * @param requestSuccessFunc function to call on successful request
      */
+    @MainThread
     private fun requestAndSaveData(query: String) {
         if (isRequestInProgress) return
 
-        _networkState.postValue(NetworkState.LOADING)
+        _networkState.value = NetworkState.LOADING
         isRequestInProgress = true
         searchAndHandleResponse(api, query, lastRequestedItem, { sequences, count ->
 

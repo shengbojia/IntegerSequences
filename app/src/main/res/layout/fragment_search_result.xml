@@ -8,29 +8,52 @@
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="com.shengbojia.integersequences.ui.SearchResultFragment">
-        
-        <TextView 
-                android:id="@+id/tv_resultFrag_foundResults"
-                android:text="@string/resultFrag_foundResults"
-                android:layout_width="wrap_content" 
-                android:layout_height="wrap_content"/>
 
-        <TextView
-                android:id="@+id/tv_resultFrag_resultsNum"
-                android:text="0"
-                android:layout_marginStart="@dimen/padding_listItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_sequenceList"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            <TextView
+                    android:id="@+id/tv_resultFrag_foundResults"
+                    android:text="@string/resultFrag_foundResults"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/tv_resultFrag_resultsNum"
+                    android:text="@string/resultFrag_loading"
+                    android:layout_marginStart="@dimen/padding_listItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/list_item_sequence" 
-                android:scrollbars="vertical">
+                android:layout_height="match_parent">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_sequenceList"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:listitem="@layout/list_item_sequence"
+                    android:scrollbars="vertical">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <ProgressBar
+                    android:id="@+id/progressBar_resultFrag_loading"
+                    android:layout_gravity="center"
+                    android:minHeight="@dimen/minSize_progressBar"
+                    android:minWidth="@dimen/minSize_progressBar"
+                    android:indeterminate="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </FrameLayout>
+
+
 
     </LinearLayout>
 </layout>

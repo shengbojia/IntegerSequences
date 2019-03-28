@@ -42,5 +42,5 @@ class SearchViewModel(private val repository: SequenceRepository) : ViewModel() 
         queryLiveData.value = query
     }
 
-
+    fun lastQueryValue(): String? = queryLiveData.value
 }

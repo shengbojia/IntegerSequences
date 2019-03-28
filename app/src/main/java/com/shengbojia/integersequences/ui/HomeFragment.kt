@@ -9,11 +9,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.shengbojia.integersequences.R
 import com.shengbojia.integersequences.util.InjectorUtils
 import com.shengbojia.integersequences.viewmodel.SearchViewModel
 import com.shengbojia.integersequences.databinding.FragmentHomeBinding
 import com.shengbojia.integersequences.util.Utils
+import com.shengbojia.integersequences.worker.ClearCacheWorker
 
 /**
  * A simple [Fragment] subclass.
@@ -87,11 +91,23 @@ class HomeFragment : Fragment() {
      */
     private fun search() {
         Log.d(TAG, "Clicked search button")
-        val queryInput = filterInput(binding.etSearchQueryInput.text.toString())
+        val queryInput = binding.etSearchQueryInput.text.toString()
+
+        if (queryInput.isBlank()) {
+            Toast.makeText(activity, getString(R.string.toast_emptyQuery), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (searchViewModel.lastQueryValue() == null || searchViewModel.lastQueryValue() != queryInput) {
+
+            val workRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<ClearCacheWorker>().build()
+            WorkManager.getInstance().enqueue(workRequest)
+            searchViewModel.search(queryInput)
+
+        }
 
         Utils.hideSoftKeyboard(activity)
 
-        searchViewModel.search(queryInput)
         val direction = HomeFragmentDirections.actionHomeFragmentToSearchResultFragment()
         findNavController().navigate(direction)
     }
@@ -100,8 +116,8 @@ class HomeFragment : Fragment() {
      * Cleans up the user input into a form fit for the query.
      */
     private fun filterInput(queryInput: String): String {
-        return queryInput
 
+        return queryInput
     }
 
     companion object {

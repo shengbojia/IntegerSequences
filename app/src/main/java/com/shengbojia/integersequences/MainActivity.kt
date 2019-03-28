@@ -7,7 +7,10 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.shengbojia.integersequences.databinding.ActivityMainBinding
+import com.shengbojia.integersequences.worker.ClearCacheWorker
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -25,5 +28,4 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
-
 }

@@ -26,4 +26,7 @@ interface SequenceDao {
             "OR (sequenceSnippet LIKE :query || ',%')" +
             "ORDER BY numberId")
     fun search(query: String): DataSource.Factory<Int, IntSequence>
+
+    @Query("DELETE FROM sequences_table")
+    fun deleteAll()
 }

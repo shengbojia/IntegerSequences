@@ -37,13 +37,19 @@ Things you can do with this app:
     * [Data Binding][5] - Declaratively bind observable data sources to UI components.
     * [Lifecycles][6] - Components respond automatically to lifecycle events.
     * [LiveData][7] - Data objects that notify views when the underlying database changes.
+    * [Paging][14] - Load and display small chunks of data at a time. Manage infinite lists in Recyclerview.
     * [Navigation][8] - Keeps navigation between fragments simple.
-    * [Room][9] - Provides layer of abstraction over SQLite for more robust database access.
+    * [Room][9] - Local cache for network data, to ensure single "source of truth" when accessing data.
     * [ViewModel][10] - Store UI-related data between state changes and handles fragment to fragment communication. Easily schedule asynchronous tasks.
   * UI - Widgets and helpers to make app presentable and clean.
     * [Animations & Transitions][11] - Transition between fragments and events.
     * [Fragment][12] - A basic, reusable piece of composable UI.
     * [Layout][13] - Organize widgets in a variety of ways. 
+* [Google][40] - Open source projects from Google.
+  * [Gson][41] - Serializer/deserializer from json to Java/Kotlin objects.
+* [Square Open Source][30] - Square has made lots of useful Android libaries, many recommended by Google
+  * [Retrofit][31] - Turns HTTP API into a Java/Kotlin interface.
+  * [OkHttp][32] - Works in tandem with Retrofit.
 * [Kotlin][20]
   * [Kotlin Coroutines][21] for managing background threads with simplified code and reducing needs for callbacks
 
@@ -61,8 +67,14 @@ Things you can do with this app:
 [11]: https://developer.android.com/training/animation/
 [12]: https://developer.android.com/guide/components/fragments
 [13]: https://developer.android.com/guide/topics/ui/declaring-layout
+[14]: https://developer.android.com/topic/libraries/architecture/paging
 [20]: https://kotlinlang.org/
 [21]: https://kotlinlang.org/docs/reference/coroutines-overview.html
+[30]: https://square.github.io/
+[31]: https://square.github.io/retrofit/
+[32]: http://square.github.io/okhttp/
+[40]: https://opensource.google.com/
+[41]: https://opensource.google.com/projects/gson
 
 ## License
 Notes is under the MIT license. See the [LICENSE](LICENSE) for more information.

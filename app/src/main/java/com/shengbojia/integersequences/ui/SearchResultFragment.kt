@@ -51,7 +51,6 @@ class SearchResultFragment : Fragment() {
         initAdapter()
         initResultSummary()
         handleNetworkState()
-        handleResultState()
 
         setHasOptionsMenu(true)
 
@@ -75,6 +74,7 @@ class SearchResultFragment : Fragment() {
     private fun handleNetworkState() {
         searchViewModel.networkState.observe(viewLifecycleOwner, Observer {
             binding.apply {
+
                 if (it == null || it == NetworkState.LOADING) {
                     Log.d(TAG, "null or Loading: $it")
                     progressBarResultFragLoading.visibility = View.VISIBLE
@@ -90,6 +90,8 @@ class SearchResultFragment : Fragment() {
             }
         })
     }
+
+    /*
 
     private fun handleResultState() {
         Log.d(TAG, "handleLoadedResult")
@@ -115,6 +117,7 @@ class SearchResultFragment : Fragment() {
 
         })
     }
+    */
 
     private fun handleNetworkError(errorMsg: String) {
         Log.d(TAG, "handleNetworkError($errorMsg)")
@@ -131,7 +134,23 @@ class SearchResultFragment : Fragment() {
 
     private fun initResultSummary() {
         searchViewModel.totalCount.observe(viewLifecycleOwner, Observer {
-            binding.tvResultFragResultsNum.text = it.toString()
+            binding.apply {
+                if (it == null) {
+                    linearResultFragResultSummary.visibility = View.GONE
+                    return@Observer
+                }
+                tvResultFragResultsNum.text = it.toString()
+                if (it > 50000) {
+                    tvResultFragInvalidResult.text = getString(R.string.invalidResult_tooMany)
+                    tvResultFragInvalidResult.visibility = View.VISIBLE
+                } else if (it == 0) {
+                    tvResultFragInvalidResult.text = getString(R.string.invalidResult_noResults)
+                    tvResultFragInvalidResult.visibility = View.VISIBLE
+                } else {
+                    tvResultFragInvalidResult.visibility = View.GONE
+                }
+            }
+
         })
     }
 

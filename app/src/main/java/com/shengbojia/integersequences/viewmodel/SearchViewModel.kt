@@ -22,13 +22,16 @@ class SearchViewModel(private val repository: SequenceRepository) : ViewModel() 
     val sequences: LiveData<PagedList<IntSequence>> = Transformations.switchMap(resultLiveData) {
         it.data
     }
+
     val networkState: LiveData<NetworkState> = Transformations.switchMap(resultLiveData) {
         it.networkState
     }
 
+    /*
     val resultState: LiveData<ResultState> = Transformations.switchMap(resultLiveData) {
         it.resultState
     }
+    */
 
     val totalCount: LiveData<Int> = Transformations.switchMap(resultLiveData) {
         it.totalCount
@@ -40,6 +43,7 @@ class SearchViewModel(private val repository: SequenceRepository) : ViewModel() 
      */
     fun search(query: String) {
         queryLiveData.value = query
+
     }
 
     fun lastQueryValue(): String? = queryLiveData.value

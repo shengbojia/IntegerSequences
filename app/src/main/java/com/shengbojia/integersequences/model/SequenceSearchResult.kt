@@ -9,6 +9,6 @@ import com.shengbojia.integersequences.repository.ResultState
 data class SequenceSearchResult(
     val data: LiveData<PagedList<IntSequence>>,
     val networkState: LiveData<NetworkState>,
-    val resultState: LiveData<ResultState>,
+    //val resultState: LiveData<ResultState>,
     val totalCount: LiveData<Int>
 )

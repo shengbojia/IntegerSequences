@@ -30,10 +30,13 @@ class SequenceBoundaryCallback(
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
+    /*
     private val _resultState = MutableLiveData<ResultState>()
 
     val resultState: LiveData<ResultState>
         get() = _resultState
+
+    */
 
     private val _totalCount = MutableLiveData<Int>()
 
@@ -49,7 +52,11 @@ class SequenceBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         Log.d(TAG, "onZero")
-        requestAndSaveData(query)
+        requestAndSaveData(query) { sequences, count ->
+            // in bg thread now
+            _totalCount.postValue(count)
+            requestSuccess(sequences)
+        }
         Log.d(TAG, "onZero total count: ${totalCount.value}")
     }
 
@@ -63,7 +70,9 @@ class SequenceBoundaryCallback(
             return
         }
 
-        requestAndSaveData(query)
+        requestAndSaveData(query) { sequences, _ ->
+            requestSuccess(sequences)
+        }
     }
 
     /*
@@ -99,6 +108,7 @@ class SequenceBoundaryCallback(
     }
     */
 
+    /*
     /**
      * Only called on the initial call to the network. Determines the type of result returned by the network
      * from the query, and sets the total count of matching results.
@@ -121,6 +131,7 @@ class SequenceBoundaryCallback(
         _totalCount.postValue(count)
 
     }
+    */
 
     /**
      * On the event of a successful network request, update the index of last requested item, network state to loaded,
@@ -130,7 +141,7 @@ class SequenceBoundaryCallback(
      * @param count number of matching results as reported by network
      */
     @WorkerThread
-    private fun requestSuccess(sequences: List<IntSequence>, count: Int) {
+    private fun requestSuccess(sequences: List<IntSequence>) {
         // TODO: Could do something with count, like check if data has changed
         cache.insert(sequences) {
             // update status
@@ -146,15 +157,15 @@ class SequenceBoundaryCallback(
      * @param query to be searched
      */
     @MainThread
-    private fun requestAndSaveData(query: String) {
+    private fun requestAndSaveData(query: String,
+                                   onSuccess: (List<IntSequence>, Int) -> Unit) {
         if (isRequestInProgress) return
 
         _networkState.value = NetworkState.LOADING
         isRequestInProgress = true
         searchAndHandleResponse(api, query, lastRequestedItem, { sequences, count ->
 
-            determineResultState(sequences, count)
-            requestSuccess(sequences, count)
+            onSuccess(sequences, count)
 
         }, { errorMsg ->
             // Safe as LiveData calls this on main thread

@@ -22,7 +22,7 @@ class SequenceRepository(
         // the locally stored list of data
         val boundaryCallback = SequenceBoundaryCallback(query, api, cache)
         val networkState = boundaryCallback.networkState
-        val resultState = boundaryCallback.resultState
+        //val resultState = boundaryCallback.resultState
         val totalCount = boundaryCallback.totalCount
 
         // get paged list
@@ -36,7 +36,7 @@ class SequenceRepository(
             .setBoundaryCallback(boundaryCallback)
             .build()
 
-        return SequenceSearchResult(data, networkState, resultState, totalCount)
+        return SequenceSearchResult(data, networkState, /*resultState,*/ totalCount)
     }
 
     companion object {
